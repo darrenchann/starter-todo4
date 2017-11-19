@@ -182,7 +182,7 @@ class Mtce extends Application {
     }
 
     /**
-     * Deletees this item altogether.
+     * Deletes this item altogether.
      */
     function delete()
     {
