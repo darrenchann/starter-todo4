@@ -1,46 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the edit
--->
 <tasks>
-    <task id = "1">
+    <task>
+        <id>1</id>
         <task>Comp1234 assignment</task>
         <priority>3</priority>
         <size>2</size>
         <group>2</group>
-        <deadlime>20170219</deadlime>
+        <deadline>20170219</deadline>
         <status>1</status>
         <flag></flag>
     </task>
-     <task id = "2">
+    <task>
+        <id>2</id>
         <task>Mow the lawn</task>
         <priority>2</priority>
         <size>2</size>
         <group>1</group>
-        <deadlime></deadlime>
+        <deadline></deadline>
         <status>2</status>
         <flag></flag>
     </task>
-    <task id = "3">
+    <task>
+        <id>3</id>
         <task>Wash the car</task>
         <priority>2</priority>
         <size>2</size>
         <group>1</group>
-        <deadlime></deadlime>
+        <deadline></deadline>
         <status></status>
         <flag></flag>
     </task>
-    <task id = "4">
+    <task>
+        <id>4</id>
         <task>Paint the fence</task>
         <priority>1</priority>
         <size>2</size>
         <group>1</group>
-        <deadlime></deadlime>
+        <deadline></deadline>
         <status></status>
         <flag></flag>
-    </task>  
-    
-
+    </task>
 </tasks>

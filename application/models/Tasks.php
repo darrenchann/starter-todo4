@@ -1,10 +1,10 @@
 <?php
 
-class Tasks extends CSV_Model {
+class Tasks extends XML_Model {
 
     public function __construct()
     {
-            parent::__construct(APPPATH . '../data/tasks.csv', 'id');
+            parent::__construct(APPPATH . '../data/tasks.xml', 'id');
     }
     
     function getCategorizedTasks()
@@ -30,7 +30,7 @@ class Tasks extends CSV_Model {
         return $converted;
     }
     
-        function makeCategorizedPanel($tasks)
+    function makeCategorizedPanel($tasks)
     {
         $parms = ['display_tasks' => $this->tasks->getCategorizedTasks()];
         return $this->parser->parse('by_category', $parms, true);
