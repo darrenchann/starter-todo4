@@ -140,8 +140,10 @@ class XML_Model extends Memory_Model
 		// rebuild the keys table
 		$this->reindex();
 		//---------------------
+		*/
 		if (($handle = fopen($this->_origin, "w")) !== FALSE)
 		{
+		/*
 			fputcsv($handle, $this->_fields);
 			foreach ($this->_data as $key => $record)
 				fputcsv($handle, array_values((array) $record));
