@@ -22,6 +22,7 @@ class XML_Model extends Memory_Model
 	{
 		parent::__construct();
 
+		$origin = realpath($origin);
 		// guess at persistent name if not specified
 		if ($origin == null)
 			$this->_origin = get_class($this);
@@ -45,6 +46,8 @@ class XML_Model extends Memory_Model
 	 */
 	protected function load()
 	{
+
+		/*
 		if (($tasks = simplexml_load_file($this->_origin)) !== FALSE)
 		{
 			foreach ($tasks as $task) {
@@ -64,6 +67,67 @@ class XML_Model extends Memory_Model
 
 		// rebuild the keys table
 		$this->reindex();
+
+		*/
+		if (file_exists(realpath($this->_origin))) {
+
+		    $this->xml = simplexml_load_file(realpath($this->_origin));
+		    if ($this->xml === false) {
+			      // error so redirect or handle error
+			      header('location: /404.php');
+			      exit;
+			}
+
+		    $xmlarray =$this->xml;
+
+		    //if it is empty; 
+		    if(empty($xmlarray)) {
+		    	return;
+		    }
+
+		    //get all xmlonjects into $xmlcontent
+		    $rootkey = key($xmlarray);
+		    $xmlcontent = (object)$xmlarray->$rootkey;
+
+		    $keyfieldh = array();
+		    $first = true;
+
+		    //if it is empty; 
+		    if(empty($xmlcontent)) {
+		    	return;
+		    }
+
+		    $dataindex = 1;
+		    $first = true;
+		    foreach ($xmlcontent as $oj) {
+		    	if($first){
+			    	foreach ($oj as $key => $value) {
+			    		$keyfieldh[] = $key;	
+			    		//var_dump((string)$value);
+			    	}
+			    	$this->_fields = $keyfieldh;
+			    }
+		    	$first = false; 
+
+		    	//var_dump($oj->children());
+		    	$one = new stdClass();
+
+		    	//get objects one by one
+		    	foreach ($oj as $key => $value) {
+		    		$one->$key = (string)$value;
+		    	}
+		    	$this->_data[$dataindex++] =$one; 
+		    }	
+
+
+		 	//var_dump($this->_data);
+		} else {
+		    exit('Failed to open the xml file.');
+		}
+
+		// --------------------
+		// rebuild the keys table
+		$this->reindex();
 	}
 
 	/**
@@ -72,17 +136,38 @@ class XML_Model extends Memory_Model
 	 */
 	protected function store()
 	{
+		/*
 		// rebuild the keys table
 		$this->reindex();
 		//---------------------
+		*/
 		if (($handle = fopen($this->_origin, "w")) !== FALSE)
 		{
+		/*
 			fputcsv($handle, $this->_fields);
 			foreach ($this->_data as $key => $record)
 				fputcsv($handle, array_values((array) $record));
 			fclose($handle);
 		}
 		// --------------------
+		*/
+		$xmlDoc = new DOMDocument( "1.0");
+        $xmlDoc->preserveWhiteSpace = false;
+        $xmlDoc->formatOutput = true;
+        $data = $xmlDoc->createElement($this->xml->getName());
+        foreach($this->_data as $key => $value)
+        {
+            $task  = $xmlDoc->createElement($this->xml->children()->getName());
+            foreach ($value as $itemkey => $record ) {
+                $item = $xmlDoc->createElement($itemkey, htmlspecialchars($record));
+                $task->appendChild($item);
+                }
+                $data->appendChild($task);
+            }
+            $xmlDoc->appendChild($data);
+            $xmlDoc->saveXML($xmlDoc);
+            $xmlDoc->save($this->_origin);
+		}
 	}
 
 }
