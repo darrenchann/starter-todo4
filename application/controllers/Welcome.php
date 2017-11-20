@@ -31,6 +31,11 @@ class Welcome extends Application
 	// process the array in reverse, until we have five
 	$count = 0;
 	foreach(array_reverse($tasks) as $task) {
+		// Removes completed task from the to-do list.
+		if ($task->status == 2) {
+			continue;
+		}
+
 		$task->priority = $this->app->priority($task->priority);
 		$display_tasks[] = (array) $task;
 		$count++;
